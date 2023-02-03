@@ -19,6 +19,8 @@ class Game:
         for i in range(1): deck.append(Heist("Heist", "", "offensive"))
         for i in range(1): deck.append(Sabotage("Sabotage", "", "offensive"))
         for i in range(1): deck.append(Spy("Spy", "", "offensive"))
+        for i in range(2): deck.append(GoodyBag("Goody Bag", "", "utility"))
+        for i in range(1): deck.append(GoodyBagPlus("Goody Bag Plus", "", "utility"))
         for i in range(4): deck.append(Building("Barracks", "", "building"))
         for i in range(3): deck.append(Building("Farm", "", "building"))
         #for i in range(2): deck.append(Building("Fort", "", "building"))

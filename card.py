@@ -124,6 +124,18 @@ class Spy(Card):
             
         return 0, f"Player {caster.name} used {self.name} on player {target.name}, a useless card!"
 
+class GoodyBag(Card):
+
+    def use_effect(self, caster):
+        caster.draw_cards(2)
+        return 0, f"Player {caster.name} used {self.name}."
+
+class GoodyBagPlus(Card):
+
+    def use_effect(self, caster):
+        caster.draw_cards(3)
+        return 0, f"Player {caster.name} used {self.name}."
+
 class Building(Card):
 
     def use_effect(self, caster):

@@ -13,8 +13,14 @@ class Game:
     def _init_deck():
         deck = []
         for i in range(30): deck.append(Attack("Attack", "", "offensive"))
-        for i in range(10): deck.append(Card("Barracks", "", "building"))
-        for i in range(10): deck.append(Card("Farm", "", "building"))
+        for i in range(2): deck.append(Backstab("Backstab", "", "offensive"))
+        for i in range(3): deck.append(Capture("Capture", "", "offensive"))
+        for i in range(3): deck.append(Destroy("Destroy", "", "offensive"))
+        for i in range(1): deck.append(Heist("Heist", "", "offensive"))
+        for i in range(1): deck.append(Sabotage("Sabotage", "", "offensive"))
+        for i in range(1): deck.append(Spy("Spy", "", "offensive"))
+        for i in range(10): deck.append(Building("Barracks", "", "building"))
+        for i in range(10): deck.append(Building("Farm", "", "building"))
 
         return deck
 

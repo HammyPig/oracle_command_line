@@ -40,38 +40,28 @@ class Player:
 
         return True
 
-    def _choose_target(self):
-        while True:
-            target = input("Select index of player to target: ")
-            target = int(target)
-            target = Player.game.players[target]
+    def choose_target(self):
+        target = input("Select index of player to target: ")
+        target = int(target)
+        target = Player.game.players[target]
 
-            if target.is_targettable():
-                return target
-            else:
-                print(f"Player {target.name} is not targettable! Please choose another player.")
+        return target
 
-    def play_card(self, card_i):
-        if card_i >= len(self.hand):
-            return
+    def choose_card_from(self, target):
+        target_card = input("Select index of card to target: ")
+        target_card = int(target_card)
+        target_card = target.hand[target_card]
 
-        card = self.hand[card_i]
+        return target_card
 
-        if card.type == "offensive":
-            if card.name == "Attack":
-                if self.attack_count >= self._attack_limit():
-                    print("Already used maximum amount of attacks!")
-                    return
-                else:
-                    self.attack_count += 1
-                    
-            target = self._choose_target()
-            card.use(self, target)
-        elif card.type == "building":
-            self.buildings.append(card)
-            print(f"Player {self.name} used {card.name}")
+    def choose_building(self):
+        target = self.choose_target()
+        
+        target_building = input("Select index of building to target: ")
+        target_building = int(target_building)
+        target_building = target.buildings[target_building]
 
-        self.hand.pop(card_i)
+        return target_building
 
     def draw_cards(self, n):
         for i in range(n):
@@ -87,7 +77,10 @@ class Player:
             if i == "": return
             
             i = int(i)
-            self.play_card(i)
+            card = self.hand[i]
+            status_code, status_description = card.use(self)
+            
+            print(status_description + "\n")
 
     def end_turn(self):
         self.attack_count = 0

@@ -23,6 +23,14 @@ class Player:
 
         return attack_limit
 
+    def _hand_limit(self):
+        hand_limit = 5
+        for building in self.buildings:
+            if building.name == "Farm":
+                hand_limit += 1
+
+        return hand_limit
+
     def is_dead(self):
         return self.health <= 0
 
@@ -83,6 +91,6 @@ class Player:
     def end_turn(self):
         self.attack_count = 0
 
-        if len(self.hand) < 5:
-            amount_to_draw = 5 - len(self.hand)
+        if len(self.hand) < self._hand_limit():
+            amount_to_draw = self._hand_limit() - len(self.hand)
             self.draw_cards(amount_to_draw)

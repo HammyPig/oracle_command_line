@@ -48,6 +48,14 @@ class Player:
 
         return True
 
+    def can_use_spells(self):
+        for player in Player.game.players:
+            for building in player.buildings:
+                if building.name == "Spell Tower":
+                    return True
+
+        return False
+
     def choose_target(self):
         target = input("Select index of player to target: ")
         target = int(target)

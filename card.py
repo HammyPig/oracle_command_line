@@ -142,3 +142,35 @@ class Building(Card):
         caster.buildings.append(self)
 
         return 0, f"Player {caster.name} used {self.name}"
+
+class Barrier(Card):
+
+    def use_effect(self, caster):
+        if not caster.can_use_spells(): return 1, f"Cannot use {self.name}, no Spell Tower is present!"
+
+        caster.buildings.append(self)
+
+        return 0, f"Player {caster.name} used {self.name}"
+
+class BlackHole(Card):
+
+    def use_effect(self, caster):
+        if not caster.can_use_spells(): return 1, f"Cannot use {self.name}, no Spell Tower is present!"
+
+        for player in caster.game.players:
+            player.buildings = []
+
+        return 0, f"Player {caster.name} used {self.name}"
+
+class BloodMagic(Card):
+
+    def use_effect(self, caster):
+        if not caster.can_use_spells(): return 1, f"Cannot use {self.name}, no Spell Tower is present!"
+
+        target = caster.choose_target()
+        old_caster_health = caster.health
+
+        caster.health = target.health
+        target.health = old_caster_health
+
+        return 0, f"Player {caster.name} used {self.name}, switching health from {old_caster_health} to {caster.health}"

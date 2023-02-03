@@ -29,7 +29,8 @@ class Attack(Card):
             return 1, f"Player {target.name} is not targettable! Please choose another player."
 
         old_target_health = target.health
-        target.health -= 1
+        target.health -= caster._attack_damage()
+        target.health = max(0, target.health)
         
         return 0, f"Player {caster.name} used {self.name} on player {target.name}, reducing their health from {old_target_health} to {target.health}!"
 

@@ -31,6 +31,14 @@ class Player:
 
         return hand_limit
 
+    def _attack_damage(self):
+        attack_damage = 1
+        for building in self.buildings:
+            if building.name == "Spell Tower":
+                attack_damage += 1
+
+        return attack_damage
+
     def is_dead(self):
         return self.health <= 0
 

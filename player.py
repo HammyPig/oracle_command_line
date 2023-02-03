@@ -13,7 +13,7 @@ class Player:
         if self.is_dead():
             return f"Player {self.name}: DEAD"
 
-        return f"Player {self.name}, health: {self.health}, buildings: {self.buildings}, attacks: {self.attack_count}/{self._attack_limit()}"
+        return f"Player {self.name}, health: {self.health}, buildings: {self.buildings}, attacks: {self.attack_count}/{self._attack_limit()}, cards: {self.hand}"
 
     def _attack_limit(self):
         attack_limit = 1

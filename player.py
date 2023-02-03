@@ -58,12 +58,13 @@ class Player:
         card = self.hand[card_i]
 
         if card.type == "offensive":
-            if card.name == "Attack" and self.attack_count >= self._attack_limit():
-                print("Already used maximum amount of attacks!")
-                return
-            else:
-                self.attack_count += 1
-
+            if card.name == "Attack":
+                if self.attack_count >= self._attack_limit():
+                    print("Already used maximum amount of attacks!")
+                    return
+                else:
+                    self.attack_count += 1
+                    
             target = self._choose_target()
             card.use(self, target)
         elif card.type == "building":

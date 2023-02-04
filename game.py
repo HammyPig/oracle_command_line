@@ -5,10 +5,12 @@ import random
 
 class Game:
 
-    def __init__(self):
+    def __init__(self, log=True):
         self.players = []
         self.deck = Game._init_deck()
         self.discard_pile = []
+
+        self.log = log
 
     def _init_deck():
         deck = []
@@ -62,7 +64,7 @@ class Game:
 
     def play_turn(self, player):
         if player.is_dead(): return
-        print(16*"=" + f" Player {player.name}'s Turn " + 16*"=" + "\n")
+        if self.log: print(16*"=" + f" Player {player.name}'s Turn " + 16*"=" + "\n")
         player.play_turn()
         player.end_turn()
 

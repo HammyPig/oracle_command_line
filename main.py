@@ -19,7 +19,7 @@ def main():
     for i in range(len(game.players)): game.players[i].draw_cards(5)
 
     while True:
-        print(game.state())
+        if game.log: print(game.state())
 
         game.play_round()
 

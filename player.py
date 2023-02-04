@@ -96,7 +96,7 @@ class Player:
             card = self.hand[i]
             status_code, status_description = card.use(self)
             
-            print(status_description + "\n")
+            if self.game.log: print(status_description + "\n")
 
     def end_turn(self):
         self.attack_count = 0

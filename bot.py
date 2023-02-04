@@ -61,6 +61,8 @@ class Bot(Player):
 
                 if status_code == 1:
                     i += 1
+            else:
+                i += 1
 
             if i >= len(self.hand):
                 return

@@ -17,26 +17,8 @@ def main():
     for player in players:
         game.add_player(player)
 
-    # all players pick up 5 cards
-    for i in range(len(game.players)): game.players[i].draw_cards(5)
-
-    while True:
-        result = game.play_round()
-        if result:
-            print(result)
-            return
-
-        # check how many players alive
-        alive = 0
-        for i in range(len(game.players)):
-            if not game.players[i].is_dead():
-                alive += 1
-
-        if alive < 2:
-            break
-
-    print(game.state())
-
+    game.start()
+    game.print_game_log()
     
 if __name__ == "__main__":
     main()

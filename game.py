@@ -89,23 +89,43 @@ class Game:
         player.play_turn()
         player.end_turn()
 
+    def winning_role(self):
+        dead_roles = [player.role for player in self.players if player.is_dead()]
+        
+        if all(role in dead_roles for role in ["The Crown", "Usurper", "Knight", "Cultist"]):
+            return "Demon Lord"
+
+        if all(role in dead_roles for role in ["Demon Lord", "Usurper", "Cultist"]):
+            return "The Crown"
+
+        if all(role in dead_roles for role in ["The Crown", "Knight"]):
+            return "Cultist"
+
+        if all(role in dead_roles for role in ["The Crown"]):
+            return "Usurper"
+
+        return None
+
     def play_round(self):
         for i in range(len(self.players)):
             player = self.players[i]
             self.play_turn(player)
 
-        dead_roles = [player.role for player in self.players if player.is_dead()]
-        
-        if all(role in dead_roles for role in ["The Crown", "Usurper", "Knight", "Cultist"]):
-            return "Demon Lord wins!"
-
-        if all(role in dead_roles for role in ["Demon Lord", "Usurper", "Cultist"]):
-            return "The Crown wins!"
-
-        if all(role in dead_roles for role in ["The Crown", "Knight"]):
-            return "Cultist wins!"
-
-        if all(role in dead_roles for role in ["The Crown"]):
-            return "Usurper wins!"
+            winning_role = self.winning_role()
+            if winning_role:
+                return winning_role
 
         return None
+        
+    def start(self):
+        # all players pick up 5 cards
+        for i in range(len(self.players)):
+            self.players[i].draw_cards(5)
+
+        # enter game loop
+        while True:
+            winning_role = self.play_round()
+
+            if winning_role:
+                self.logs.append(f"{winning_role} wins!")
+                return winning_role

@@ -29,8 +29,8 @@ class Game:
         for i in range(2): deck.append(Building("Fort", "", "building"))
         for i in range(3): deck.append(Building("Spell Tower", "", "building"))
         deck.append(Barrier("Barrier", "", "spell"))
-        deck.append(BlackHole("BlackHole", "", "spell"))
-        deck.append(BloodMagic("BloodMagic", "", "spell"))
+        deck.append(BlackHole("Black Hole", "", "spell"))
+        deck.append(BloodMagic("Blood Magic", "", "spell"))
 
         return deck
 

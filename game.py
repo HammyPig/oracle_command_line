@@ -5,13 +5,12 @@ import random
 
 class Game:
 
-    def __init__(self, log=True):
+    def __init__(self):
         self.players = []
         self.deck = Game._init_deck()
         self.discard_pile = []
         self.roles = ["The Crown", "Demon Lord", "Usurper", "Knight", "Cultist"]
-
-        self.log = log
+        self.logs = []
 
     def _init_deck():
         deck = []
@@ -34,6 +33,10 @@ class Game:
         deck.append(BloodMagic("Blood Magic", "", "spell"))
 
         return deck
+
+    def print_game_log(self):
+        for log in self.logs:
+            print(log)
 
     def add_player(self, player):
         # add player to game
@@ -81,7 +84,7 @@ class Game:
 
     def play_turn(self, player):
         if player.is_dead(): return
-        if self.log: print(f"--- Player {player.name}'s Turn: Role: {player.role}, Cards: {player.hand}, Buildings: {player.buildings} ---")
+        self.logs.append(f"--- Player {player.name}'s Turn: Role: {player.role}, Cards: {player.hand}, Buildings: {player.buildings} ---")
         player.play_turn()
         player.end_turn()
 

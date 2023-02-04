@@ -135,7 +135,7 @@ class Player:
             card = self.hand[i]
             status_code, status_description = card.use(self)
             
-            if self.game.log: print(status_description + "\n")
+            self.game.logs.append(status_description)
 
     def end_turn(self):
         self.attack_count = 0

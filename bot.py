@@ -50,7 +50,7 @@ class Bot(Player):
             card = self.hand[i]
             if random.randint(0, 1):
                 status_code, status_description = card.use(self)
-                if self.game.log: print(status_description)
+                self.game.logs.append(status_description)
 
                 if card.name == "Heist" and status_code == 0:
                     i = 0

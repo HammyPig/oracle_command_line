@@ -5,15 +5,17 @@ from bot import Bot
 
 def main():
     game = Game()
-    Player.game = game
-
-    game.players = [
+    
+    players = [
         Player("1"),
         Bot("2"),
         Bot("3"),
         Bot("4"),
         Bot("5"),
     ]
+
+    for player in players:
+        game.add_player(player)
 
     # all players pick up 5 cards
     for i in range(len(game.players)): game.players[i].draw_cards(5)

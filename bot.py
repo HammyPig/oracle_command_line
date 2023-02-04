@@ -5,7 +5,7 @@ from player import Player
 class Bot(Player):
 
     def choose_target(self):
-        targettable_players = [player for player in Bot.game.players if player.is_targettable()]
+        targettable_players = [player for player in self.game.players if player.is_targettable()]
         if not targettable_players: return None
 
         target = random.choice(targettable_players)
@@ -20,7 +20,7 @@ class Bot(Player):
         return target_card
 
     def choose_building(self):
-        players_with_buildings = [player for player in Bot.game.players if player.buildings]
+        players_with_buildings = [player for player in self.game.players if player.buildings]
         if not players_with_buildings: return None, None
         
         target = random.choice(players_with_buildings)

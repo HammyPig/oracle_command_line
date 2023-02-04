@@ -1,9 +1,8 @@
 class Player:
 
-    game = None
-
     def __init__(self, name):
         self.name = name
+        self.game = None
         self.health = 5
         self.hand = []
         self.buildings = []
@@ -49,7 +48,7 @@ class Player:
         return True
 
     def can_use_spells(self):
-        for player in Player.game.players:
+        for player in self.game.players:
             for building in player.buildings:
                 if building.name == "Spell Tower":
                     return True
@@ -59,7 +58,7 @@ class Player:
     def choose_target(self):
         target = input("Select index of player to target: ")
         target = int(target)
-        target = Player.game.players[target]
+        target = self.game.players[target]
 
         return target
 
@@ -120,7 +119,7 @@ class Player:
 
     def draw_cards(self, n):
         for i in range(n):
-            card = Player.game.draw_card()
+            card = self.game.draw_card()
             self.hand.append(card)
 
     def play_turn(self):

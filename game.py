@@ -34,6 +34,10 @@ class Game:
 
         return deck
 
+    def add_player(self, player):
+        self.players.append(player)
+        player.game = self
+
     def draw_card(self):
         if not len(self.deck):
             self.deck = Game._init_deck()

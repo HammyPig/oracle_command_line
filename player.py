@@ -3,6 +3,7 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.game = None
+        self.role = None
         self.health = 5
         self.hand = []
         self.buildings = []

@@ -21,9 +21,10 @@ def main():
     for i in range(len(game.players)): game.players[i].draw_cards(5)
 
     while True:
-        if game.log: print(game.state())
-
-        game.play_round()
+        result = game.play_round()
+        if result:
+            print(result)
+            return
 
         # check how many players alive
         alive = 0

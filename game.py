@@ -9,6 +9,7 @@ class Game:
         self.players = []
         self.deck = Game._init_deck()
         self.discard_pile = []
+        self.roles = ["The Crown", "Demon Lord", "Usurper", "Knight", "Cultist"]
 
         self.log = log
 
@@ -35,8 +36,19 @@ class Game:
         return deck
 
     def add_player(self, player):
+        # add player to game
         self.players.append(player)
         player.game = self
+
+        # kick player if no roles available
+        if not self.roles:
+            self.players.remove(player)
+            player.game = None
+        
+        # assign random role
+        player_role = random.choice(self.roles)
+        self.roles.remove(player_role)
+        player.role = player_role
 
     def draw_card(self):
         if not len(self.deck):
@@ -77,3 +89,19 @@ class Game:
         for i in range(len(self.players)):
             player = self.players[i]
             self.play_turn(player)
+
+        dead_roles = [player.role for player in self.players if player.is_dead()]
+        
+        if all(role in dead_roles for role in ["The Crown", "Usurper", "Knight", "Cultist"]):
+            return "Demon Lord wins!"
+
+        if all(role in dead_roles for role in ["Demon Lord", "Usurper", "Cultist"]):
+            return "The Crown wins!"
+
+        if all(role in dead_roles for role in ["The Crown", "Knight"]):
+            return "Cultist wins!"
+
+        if all(role in dead_roles for role in ["The Crown"]):
+            return "Usurper wins!"
+
+        return None

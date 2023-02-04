@@ -31,6 +31,16 @@ class Bot(Player):
     def choose_defend(self):
         return random.randint(0, 1)
 
+    def block_with_fort(self):
+        fort = self._fort()
+        if not fort: return None
+
+        use_fort = random.randint(0, 1)
+        if use_fort:
+            return fort
+        else:
+            return None
+
     def play_turn(self):
         i = 0
         while True:

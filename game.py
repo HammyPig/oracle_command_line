@@ -26,7 +26,7 @@ class Game:
         for i in range(1): deck.append(GoodyBagPlus("Goody Bag Plus", "", "utility"))
         for i in range(4): deck.append(Building("Barracks", "", "building"))
         for i in range(3): deck.append(Building("Farm", "", "building"))
-        #for i in range(2): deck.append(Building("Fort", "", "building"))
+        for i in range(2): deck.append(Building("Fort", "", "building"))
         for i in range(3): deck.append(Building("Spell Tower", "", "building"))
         deck.append(Barrier("Barrier", "", "spell"))
         deck.append(BlackHole("BlackHole", "", "spell"))

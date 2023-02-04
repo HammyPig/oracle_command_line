@@ -48,6 +48,11 @@ class Attack(Card):
         if defender != None:
             return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
 
+        fort = target.block_with_fort()
+        if fort:
+            target.buildings.remove(fort)
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was blocked by their fort!"
+
         old_target_health = target.health
         target.health -= caster._attack_damage()
         target.health = max(0, target.health)
@@ -64,6 +69,11 @@ class Backstab(Card):
         defender = self.defender(caster)
         if defender != None:
             return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
+
+        fort = target.block_with_fort()
+        if fort:
+            target.buildings.remove(fort)
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was blocked by their fort!"
 
         old_target_health = target.health
         target.health -= 1

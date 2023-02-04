@@ -90,6 +90,27 @@ class Player:
 
             print("Please enter y/n")
 
+    def _fort(self):
+        for building in self.buildings:
+            if building.name == "Fort":
+                return building
+                
+        return None
+
+    def block_with_fort(self):
+        fort = self._fort()
+        if not fort: return None
+
+        while True:
+            use_fort = input("Discard your fort to block damage? y/n ")
+
+            if use_fort == "y":
+                return fort
+            elif use_fort == "n":
+                return None
+
+            print("Please enter y/n")
+
     def defend_card(self):
         for card in self.hand:
             if card.name == "Defend":

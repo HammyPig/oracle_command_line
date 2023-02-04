@@ -18,6 +18,22 @@ class Card:
         
         return status_code, status_description
 
+    def defender(self, caster):
+        for player in caster.game.players:
+            if player == caster:
+                continue
+
+            defend_card = player.defend_card()
+
+            if defend_card == None:
+                continue
+
+            if player.choose_defend():
+                player.hand.remove(defend_card)
+                return player
+
+        return None
+
 class Attack(Card):
 
     def use_effect(self, caster):
@@ -27,6 +43,10 @@ class Attack(Card):
         target = caster.choose_target()
         if not target.is_targettable():
             return 1, f"Player {target.name} is not targettable! Please choose another player."
+        
+        defender = self.defender(caster)
+        if defender != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
 
         old_target_health = target.health
         target.health -= caster._attack_damage()
@@ -40,6 +60,10 @@ class Backstab(Card):
         target = caster.choose_target()
         if not target.is_targettable():
             return 1, f"Player {target.name} is not targettable! Please choose another player."
+
+        defender = self.defender(caster)
+        if defender != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
 
         old_target_health = target.health
         target.health -= 1
@@ -60,6 +84,10 @@ class Capture(Card):
         if not target.buildings:
             return 1, f"Player {target.name} does not own any buildings! Please choose another player."
 
+        defender = self.defender(caster)
+        if defender != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
+
         target.buildings.remove(target_building)
         caster.buildings.append(target_building)
 
@@ -79,6 +107,10 @@ class Destroy(Card):
         if not target.buildings:
             return 1, f"Player {target.name} does not own any buildings! Please choose another player."
 
+        defender = self.defender(caster)
+        if defender != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
+
         target.buildings = [building for building in target.buildings if building.name != target_building.name]
 
         return 0, f"Player {caster.name} used {self.name} on player {target.name}, destroying their {target_building.name}(s)!"
@@ -89,6 +121,10 @@ class Heist(Card):
         target = caster.choose_target()
         if not target.is_targettable():
             return 1, f"Player {target.name} is not targettable! Please choose another player."
+
+        defender = self.defender(caster)
+        if defender != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
 
         old_target_hand = target.hand
         target.hand = caster.hand
@@ -102,6 +138,10 @@ class Sabotage(Card):
         target = caster.choose_target()
         if not target.is_targettable():
             return 1, f"Player {target.name} is not targettable! Please choose another player."
+
+        defender = self.defender(caster)
+        if defender != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
 
         card1 = caster.choose_card_from(target)
         if card1 == None: return 1, f"Player {target.name} has no cards."
@@ -121,8 +161,18 @@ class Spy(Card):
         target = caster.choose_target()
         if not target.is_targettable():
             return 1, f"Player {target.name} is not targettable! Please choose another player."
+        
+        defender = self.defender(caster)
+        if defender != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
             
         return 0, f"Player {caster.name} used {self.name} on player {target.name}, a useless card!"
+
+class Defend(Card):
+
+    def use_effect(self, caster, responding=False):
+        return 1, f"Cannot use defend unless responding to an offensive card!"
+
 
 class GoodyBag(Card):
 

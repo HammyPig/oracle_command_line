@@ -28,6 +28,9 @@ class Bot(Player):
 
         return target, target_building
 
+    def choose_defend(self):
+        return random.randint(0, 1)
+
     def play_turn(self):
         i = 0
         while True:

@@ -79,6 +79,24 @@ class Player:
 
         return target_building
 
+    def choose_defend(self):
+        while True:
+            defend = input("Defend card played? y/n ")
+
+            if defend == "y":
+                return True
+            elif defend == "n":
+                return False
+
+            print("Please enter y/n")
+
+    def defend_card(self):
+        for card in self.hand:
+            if card.name == "Defend":
+                return card
+
+        return None
+
     def draw_cards(self, n):
         for i in range(n):
             card = Player.game.draw_card()

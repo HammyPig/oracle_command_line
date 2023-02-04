@@ -90,6 +90,17 @@ class Player:
 
             print("Please enter y/n")
 
+    def choose_nullify(self):
+        while True:
+            nullify = input("Nullify card played? y/n ")
+
+            if nullify == "y":
+                return True
+            elif nullify == "n":
+                return False
+
+            print("Please enter y/n")
+
     def _fort(self):
         for building in self.buildings:
             if building.name == "Fort":

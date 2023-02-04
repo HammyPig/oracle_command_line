@@ -34,6 +34,24 @@ class Card:
 
         return None
 
+    def nullifier(self, caster):
+        for player in caster.game.players:
+            
+            nullify_card = None
+            for card in player.hand:
+                if card.name == "Nullify":
+                    nullify_card = card
+                    break
+
+            if nullify_card == None:
+                continue
+
+            if player.choose_nullify():
+                player.hand.remove(nullify_card)
+                return player
+
+        return None
+
 class Attack(Card):
 
     def use_effect(self, caster):
@@ -43,6 +61,10 @@ class Attack(Card):
         target = caster.choose_target()
         if not target.is_targettable():
             return 1, f"Player {target.name} is not targettable! Please choose another player."
+
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was nullified by player {nullifier.name}!"
         
         defender = self.defender(caster)
         if defender != None:
@@ -66,6 +88,10 @@ class Backstab(Card):
         if not target.is_targettable():
             return 1, f"Player {target.name} is not targettable! Please choose another player."
 
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was nullified by player {nullifier.name}!"
+        
         defender = self.defender(caster)
         if defender != None:
             return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
@@ -94,6 +120,10 @@ class Capture(Card):
         if not target.buildings:
             return 1, f"Player {target.name} does not own any buildings! Please choose another player."
 
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was nullified by player {nullifier.name}!"
+
         defender = self.defender(caster)
         if defender != None:
             return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
@@ -117,6 +147,10 @@ class Destroy(Card):
         if not target.buildings:
             return 1, f"Player {target.name} does not own any buildings! Please choose another player."
 
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was nullified by player {nullifier.name}!"
+
         defender = self.defender(caster)
         if defender != None:
             return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
@@ -131,6 +165,10 @@ class Heist(Card):
         target = caster.choose_target()
         if not target.is_targettable():
             return 1, f"Player {target.name} is not targettable! Please choose another player."
+
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was nullified by player {nullifier.name}!"
 
         defender = self.defender(caster)
         if defender != None:
@@ -148,6 +186,10 @@ class Sabotage(Card):
         target = caster.choose_target()
         if not target.is_targettable():
             return 1, f"Player {target.name} is not targettable! Please choose another player."
+
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was nullified by player {nullifier.name}!"
 
         defender = self.defender(caster)
         if defender != None:
@@ -171,34 +213,58 @@ class Spy(Card):
         target = caster.choose_target()
         if not target.is_targettable():
             return 1, f"Player {target.name} is not targettable! Please choose another player."
-        
+
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was nullified by player {nullifier.name}!"
+
+
         defender = self.defender(caster)
         if defender != None:
             return 0, f"Player {caster.name} used {self.name} on player {target.name}, but was defended by player {defender.name}!"
-            
+
         return 0, f"Player {caster.name} used {self.name} on player {target.name}, a useless card!"
 
 class Defend(Card):
 
     def use_effect(self, caster, responding=False):
-        return 1, f"Cannot use defend unless responding to an offensive card!"
 
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name}, but was nullified by player {nullifier.name}!"
+
+        return 1, f"Cannot use defend unless responding to an offensive card!"
 
 class GoodyBag(Card):
 
     def use_effect(self, caster):
+
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name}, but was nullified by player {nullifier.name}!"
+
         caster.draw_cards(2)
         return 0, f"Player {caster.name} used {self.name}."
 
 class GoodyBagPlus(Card):
 
     def use_effect(self, caster):
+
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name}, but was nullified by player {nullifier.name}!"
+
         caster.draw_cards(3)
         return 0, f"Player {caster.name} used {self.name}."
 
 class Building(Card):
 
     def use_effect(self, caster):
+
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name}, but was nullified by player {nullifier.name}!"
+
         caster.buildings.append(self)
 
         return 0, f"Player {caster.name} used {self.name}"
@@ -207,6 +273,10 @@ class Barrier(Card):
 
     def use_effect(self, caster):
         if not caster.can_use_spells(): return 1, f"Cannot use {self.name}, no Spell Tower is present!"
+
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name}, but was nullified by player {nullifier.name}!"
 
         caster.buildings.append(self)
 
@@ -217,6 +287,10 @@ class BlackHole(Card):
     def use_effect(self, caster):
         if not caster.can_use_spells(): return 1, f"Cannot use {self.name}, no Spell Tower is present!"
 
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name}, but was nullified by player {nullifier.name}!"
+
         for player in caster.game.players:
             player.buildings = []
 
@@ -226,11 +300,25 @@ class BloodMagic(Card):
 
     def use_effect(self, caster):
         if not caster.can_use_spells(): return 1, f"Cannot use {self.name}, no Spell Tower is present!"
-
         target = caster.choose_target()
+
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name}, but was nullified by player {nullifier.name}!"
+
         old_caster_health = caster.health
 
         caster.health = target.health
         target.health = old_caster_health
 
         return 0, f"Player {caster.name} used {self.name}, switching health from {old_caster_health} to {caster.health}"
+
+class Nullify(Card):
+
+    def use_effect(self, caster, responding=False):
+
+        nullifier = self.nullifier(caster)
+        if nullifier != None:
+            return 0, f"Player {caster.name} used {self.name}, but was nullified by player {nullifier.name}!"
+
+        return 1, f"Cannot use {self.name} unless responding to a card!"

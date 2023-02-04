@@ -31,6 +31,7 @@ class Game:
         deck.append(Barrier("Barrier", "", "spell"))
         deck.append(BlackHole("Black Hole", "", "spell"))
         deck.append(BloodMagic("Blood Magic", "", "spell"))
+        deck.append(Nullify("Nullify", "", "spell"))
 
         return deck
 

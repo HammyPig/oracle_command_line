@@ -3,6 +3,7 @@ class Card:
     PLAYED = 0
     INVALID = 1
     BLOCKED = 2
+    RESPONDING_TO_CARD = 3
 
     def __init__(self, name, description, type):
         self.name = name
@@ -12,10 +13,14 @@ class Card:
     def __repr__(self):
         return f"{self.name}"
 
-    def use(self, caster):
+    def use(self, caster, context=None):
         card_i = caster.hand.index(self)
         caster.hand.remove(self)
-        status_code, status_description = self.use_effect(caster)
+
+        if context:
+            status_code, status_description = self.use_effect(caster, context)
+        else:
+            status_code, status_description = self.use_effect(caster)
 
         if status_code == Card.INVALID:
             caster.hand.insert(card_i, self)
@@ -33,8 +38,9 @@ class Card:
                 continue
 
             if player.choose_defend():
-                player.hand.remove(defend_card)
-                return player
+                status_code, status_description = defend_card.use(player, Card.RESPONDING_TO_CARD)
+                if status_code == Card.PLAYED:
+                    return player
 
         return None
 
@@ -51,8 +57,9 @@ class Card:
                 continue
 
             if player.choose_nullify():
-                player.hand.remove(nullify_card)
-                return player
+                status_code, status_description = nullify_card.use(player, Card.RESPONDING_TO_CARD)
+                if status_code == Card.PLAYED:
+                    return player
 
         return None
 
@@ -231,7 +238,9 @@ class Spy(Card):
 
 class Defend(Card):
 
-    def use_effect(self, caster, responding=False):
+    def use_effect(self, caster, context=None):
+        if context != Card.RESPONDING_TO_CARD:
+            return Card.INVALID, f"Cannot use defend unless responding to an offensive card!"
 
         nullifier = self.nullifier(caster)
         if nullifier != None:
@@ -319,7 +328,9 @@ class BloodMagic(Card):
 
 class Nullify(Card):
 
-    def use_effect(self, caster, responding=False):
+    def use_effect(self, caster, context=None):
+        if context != Card.RESPONDING_TO_CARD:
+            return Card.INVALID, f"Cannot use {self.name} unless responding to a card!"
 
         nullifier = self.nullifier(caster)
         if nullifier != None:

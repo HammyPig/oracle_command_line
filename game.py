@@ -81,7 +81,7 @@ class Game:
 
     def play_turn(self, player):
         if player.is_dead(): return
-        if self.log: print(16*"=" + f" Player {player.name}'s Turn " + 16*"=" + "\n")
+        if self.log: print(f"--- Player {player.name}'s Turn: Role: {player.role}, Cards: {player.hand}, Buildings: {player.buildings} ---")
         player.play_turn()
         player.end_turn()
 

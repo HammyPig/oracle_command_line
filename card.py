@@ -73,6 +73,8 @@ class Attack(Card):
         if not target.is_targettable():
             return Card.INVALID, f"Player {target.name} is not targettable! Please choose another player."
 
+        caster.attack_count += 1
+
         nullifier = self.nullifier(caster)
         if nullifier != None:
             return Card.BLOCKED, f"Player {caster.name} used {self.name} on player {target.name}, but was nullified by player {nullifier.name}!"
